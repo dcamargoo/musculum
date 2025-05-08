@@ -1,10 +1,8 @@
-import './slots.css';
+import './App.css';
 import logo from './assets/musculum.png';
 import perfilImg from './assets/perfil.png';
 import lixeiraImg from './assets/lixeira.png';
-import plusIcon from './assets/plus.png';
 import { useState } from 'react';
-import { Link } from 'react-router-dom'; // Import necessário
 
 function App() {
   const [mostrarPopup, setMostrarPopup] = useState(false);
@@ -35,9 +33,7 @@ function App() {
   return (
     <div className="app">
       <header className="header">
-        <Link to="/">
-          <img src={logo} alt="Logo Musculum" className="logo-center" />
-        </Link>
+        <img src={logo} alt="Logo Musculum" className="logo-center" />
         <img src={perfilImg} alt="Perfil" className="perfil-icon" />
       </header>
 
@@ -53,26 +49,7 @@ function App() {
             </div>
           </div>
         ))}
-
-        {slots.length > 0 && (
-          <div className="plus-floating">
-            <img
-              src={plusIcon}
-              alt="Adicionar slot"
-              className="plus-icon-large"
-              onClick={abrirPopup}
-            />
-          </div>
-        )}
       </main>
-
-      {slots.length === 0 && (
-        <div className="footer">
-          <button className="workout-button" onClick={abrirPopup}>
-            Criar <br /> slot de treino
-          </button>
-        </div>
-      )}
 
       {mostrarPopup && (
         <div className="popup">
@@ -96,6 +73,12 @@ function App() {
           </div>
         </div>
       )}
+
+      <div className="footer">
+        <button className="workout-button" onClick={abrirPopup}>
+          Criar <br /> slot de treino
+        </button>
+      </div>
     </div>
   );
 }
