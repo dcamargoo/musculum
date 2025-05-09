@@ -48,14 +48,19 @@ body, html, #root {
 }
 
 .slot-container {
+  background-color: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  padding: 16px;
   margin-bottom: 32px;
+  width: fit-content;
 }
 
 .slot-title {
-  margin: 0 0 12px 8px;
-  font-weight: bold;
-  font-size: 20px;
-  color: #333;
+  margin: 0 0 12px 4px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #555;
 }
 
 .slot-row {
@@ -65,25 +70,22 @@ body, html, #root {
 }
 
 .slot-card {
-  width: 520px;
-  height: 240px;
-  background: linear-gradient(135deg, #f0f0f0, #d4d4d4);
-  border-radius: 20px;
+  width: 300px;
+  height: 120px;
+  background-color: #f4f4f4;
+  border-radius: 12px;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-weight: 600;
-  font-size: 32px;
-  color: #333;
-  text-transform: capitalize;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-  position: relative;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  font-size: 24px;
+  font-weight: bold;
+  color: #222;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
 }
 
 .slot-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+  background-color: #eaeaea;
 }
 
 .delete-btn {
@@ -91,12 +93,33 @@ body, html, #root {
   border: none;
   padding: 0;
   cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.delete-btn:hover {
+  transform: scale(1.1);
 }
 
 .trash-icon {
   width: 60px;
   height: 60px;
   object-fit: contain;
+}
+
+.plus-floating {
+  margin-top: -12px;
+  margin-left: 139px; 
+}
+
+.plus-icon-large {
+  width: 95px;
+  height: 95px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.plus-icon-large:hover {
+  transform: scale(1.1);
 }
 
 .popup {
@@ -110,7 +133,7 @@ body, html, #root {
   width: 90%;
   max-width: 320px;
   text-align: center;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   z-index: 10;
   min-height: 180px;
 }
@@ -170,22 +193,29 @@ body, html, #root {
 }
 
 .footer {
-  position: fixed;
-  bottom: 20px;
+  position: absolute;
+  top: 50%;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translate(-50%, -50%);
   z-index: 5;
 }
 
 .workout-button {
-  background-color: #007aff;
+  background: linear-gradient(135deg, #007aff, #0051c7);
   color: white;
-  font-size: 18px;
-  padding: 18px 32px;
+  font-size: 36px;
+  padding: 24px 48px;
   border: none;
-  border-radius: 20px;
+  border-radius: 16px;
   cursor: pointer;
   text-align: center;
-  line-height: 1.2;
-  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+  line-height: 1.4;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.3s ease;
+}
+
+.workout-button:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.25);
+  background: linear-gradient(135deg, #339bff, #003f9f);
 }

@@ -1,19 +1,12 @@
-# Musculum
-## Projeto de Engenharia de Software
+# React + Vite
 
-### Integrantes:
-Carlos Eduardo Rosendo Basseto | RA: 10409941
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-Daniel Rubio Camargo | RA: 10408823
+Currently, two official plugins are available:
 
-Gustavo Kenzo | RA: 10408988
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-João Pedro Mascaro Baccelli | RA: 10224004
+## Expanding the ESLint configuration
 
-Matheus Santiago de Brito | RA: 10408953
-
-
-
-Musculum é um aplicativo que auxilia na criação de um cronograma de treinos na
-academia, recebendo informações sobre idade, peso, altura, disponibilidade e experiência
-com os treinos, para então criar uma rotina ideal a ser seguida.
+If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
