@@ -15,7 +15,7 @@ function Slots() {
   const id_usuario = 1; // você pode ajustar isso para um usuário logado futuramente
 
   useEffect(() => {
-    fetch(`http://localhost:3000/slot/${id_usuario}`)
+    fetch(`http://18.210.183.73:3000/slot/${id_usuario}`)
       .then(res => res.json())
       .then(data => setSlots(data.slots || []))
       .catch(err => console.error("Erro ao buscar slots:", err));
@@ -33,7 +33,7 @@ function Slots() {
       id_usuario: id_usuario
     };
 
-    fetch('http://localhost:3000/slot', {
+    fetch('http://18.210.183.73:3000/slot', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(slotData)
@@ -48,7 +48,7 @@ function Slots() {
   };
 
   const confirmarExclusao = () => {
-    fetch(`http://localhost:3000/slot/${popupExcluir.id}`, {
+    fetch(`http://18.210.183.73:3000/slot/${popupExcluir.id}`, {
       method: 'DELETE'
     })
       .then(() => {
