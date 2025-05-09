@@ -12,7 +12,7 @@ function Home() {
 
   // 👇 useEffect dentro da função Home
   useEffect(() => {
-    fetch('http://localhost:3000/api/teste')
+    fetch('http://18.210.183.73:3000/api/teste')
       .then((res) => res.json())
       .then((data) => console.log(data));
   }, []);
