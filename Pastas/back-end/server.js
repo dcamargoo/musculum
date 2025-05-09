@@ -8,7 +8,7 @@ const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use(cors({
-  origin: 'http://localhost:5173' // Permite chamadas do front
+  origin: 'http://18.210.183.73:5173' // Permite chamadas do front
 }));
 app.use(express.json());
 
