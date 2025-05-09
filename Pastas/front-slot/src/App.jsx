@@ -30,7 +30,7 @@ function App() {
     const novoId = Date.now();
 
     try {
-      const resposta = await fetch('http://localhost:3000/criar-slot', {
+      const resposta = await fetch('http://18.210.183.73:3000/criar-slot', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
