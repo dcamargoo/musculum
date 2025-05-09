@@ -5,8 +5,8 @@ import react from '@vitejs/plugin-react'
 export default {
   server: {
     proxy: {
-      '/criar-slot': 'http://localhost:3000',
-      '/slot': 'http://localhost:3000'
+      '/criar-slot': 'http://18.210.183.73:3000',
+      '/slot': 'http://18.210.183.73:3000'
     }
   }
 };
