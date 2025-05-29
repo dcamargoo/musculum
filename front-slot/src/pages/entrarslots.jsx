@@ -1,34 +1,64 @@
 import './EntrarSlots.css';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import logo from './assets/musculum.png';
 import perfilImg from './assets/perfil.png';
 
 function EntrarSlots() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const slotId = location.state?.slotId;
+  const slotNome = location.state?.slotNome;
+
   const [mostrarPopup, setMostrarPopup] = useState(false);
   const [form, setForm] = useState({
-    tipo: '',
     idade: '',
     altura: '',
     peso: '',
     objetivo: '',
-    equipamentos: '',
-    salvar: false
+    experiencia: '',
+    equipamentos: ''
   });
 
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setForm((prev) => ({
-      ...prev,
-      [name]: type === 'checkbox' ? checked : value
-    }));
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const confirmar = () => {
-    console.log('Treino criado:', form);
-    setMostrarPopup(false);
-    alert("Treino criado com sucesso!");
+  const confirmar = async () => {
+    try {
+      const response = await fetch('http://localhost:3000/criar-slot', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          id: slotId,
+          nomeSlot: slotNome,
+          peso: form.peso,
+          altura: form.altura,
+          objetivo: form.objetivo,
+          experiencia: form.experiencia,
+          equipamentos: form.equipamentos.split(',').map(e => e.trim())
+        })
+      });
+
+      if (!response.ok) throw new Error("Erro ao gerar treino.");
+
+      const data = await response.json();
+      const treino = data.treino;
+
+      const slotsData = JSON.parse(localStorage.getItem('slotsData') || '[]');
+      const atualizados = slotsData.map(s =>
+        s.id === slotId ? { ...s, treino } : s
+      );
+
+      localStorage.setItem('slotsData', JSON.stringify(atualizados));
+      alert('✅ Treino gerado com sucesso!');
+      navigate('/slots');
+
+    } catch (err) {
+      console.error(err);
+      alert('Erro ao gerar treino.');
+    }
   };
 
   return (
@@ -45,24 +75,20 @@ function EntrarSlots() {
 
       <main className="main-content center-content">
         <button className="workout-button" onClick={() => setMostrarPopup(true)}>
-          Criar treino
+          Criar treino para {slotNome}
         </button>
       </main>
 
       {mostrarPopup && (
         <div className="popup">
-          <h2>Criar novo treino</h2>
-          <input name="tipo" value={form.tipo} onChange={handleChange} placeholder="Tipo de treino (ex: peito, perna...)" />
-          <input name="idade" value={form.idade} onChange={handleChange} placeholder="Sua idade" />
-          <input name="altura" value={form.altura} onChange={handleChange} placeholder="Sua altura (ex: 1.75)" />
-          <input name="peso" value={form.peso} onChange={handleChange} placeholder="Seu peso (kg)" />
-          <input name="objetivo" value={form.objetivo} onChange={handleChange} placeholder="Objetivo (ex: emagrecer)" />
-          <input name="equipamentos" value={form.equipamentos} onChange={handleChange} placeholder="Equipamentos disponíveis" />
+          <h2>Gerar treino para: {slotNome}</h2>
 
-          <div className="checkbox-area">
-            <input type="checkbox" id="salvar" name="salvar" checked={form.salvar} onChange={handleChange} />
-            <label htmlFor="salvar">Deseja salvar seus dados para próximos treinos criados?</label>
-          </div>
+          <input name="idade" value={form.idade} onChange={handleChange} placeholder="Idade" />
+          <input name="altura" value={form.altura} onChange={handleChange} placeholder="Altura (cm)" />
+          <input name="peso" value={form.peso} onChange={handleChange} placeholder="Peso (kg)" />
+          <input name="objetivo" value={form.objetivo} onChange={handleChange} placeholder="Objetivo" />
+          <input name="experiencia" value={form.experiencia} onChange={handleChange} placeholder="Experiência" />
+          <input name="equipamentos" value={form.equipamentos} onChange={handleChange} placeholder="Equipamentos (separados por vírgula)" />
 
           <div className="popup-buttons">
             <button onClick={() => setMostrarPopup(false)}>Cancelar</button>

@@ -12,10 +12,11 @@ function Slots() {
   const [nomeSlot, setNomeSlot] = useState('');
   const [slots, setSlots] = useState([]);
   const [popupExcluir, setPopupExcluir] = useState(null);
+  const [avaliacoes, setAvaliacoes] = useState({});
 
   useEffect(() => {
-    // Começa sem slots
-    setSlots([]);
+    const dadosSalvos = JSON.parse(localStorage.getItem('slotsData')) || [];
+    setSlots(dadosSalvos);
   }, []);
 
   const abrirPopup = () => setMostrarPopup(true);
@@ -24,23 +25,78 @@ function Slots() {
     if (nomeSlot.trim() === '') return;
 
     const novoSlot = {
-      id_slot: Date.now(),
-      treino: nomeSlot.trim()
+      id: Date.now(),
+      nome: nomeSlot.trim(),
+      treino: ''
     };
-
-    setSlots([...slots, novoSlot]);
+    const atualizados = [...slots, novoSlot];
+    setSlots(atualizados);
+    localStorage.setItem('slotsData', JSON.stringify(atualizados));
     setNomeSlot('');
     setMostrarPopup(false);
   };
 
   const confirmarExclusao = () => {
-    setSlots(slots.filter(slot => slot.id_slot !== popupExcluir.id));
+    const atualizados = slots.filter(slot => slot.id !== popupExcluir.id);
+    setSlots(atualizados);
+    localStorage.setItem('slotsData', JSON.stringify(atualizados));
     setPopupExcluir(null);
   };
 
   const acessarSlot = (slot) => {
-    console.log("Acessando slot:", slot);
-    navigate('/entrar-slots'); // Ação ao clicar em um slot
+    navigate('/entrar-slots', { state: { slotId: slot.id, slotNome: slot.nome } });
+  };
+
+  const avaliarSlot = async (slotId, nota) => {
+    setAvaliacoes(prev => ({ ...prev, [slotId]: nota }));
+
+    if (nota < 4) {
+      const slot = slots.find(s => s.id === slotId);
+      if (!slot) return;
+
+      try {
+        const response = await fetch('http://localhost:3000/criar-slot', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            id: slotId,
+            nomeSlot: slot.nome,
+            peso: 70,
+            altura: 170,
+            objetivo: "revisar treino anterior",
+            experiencia: "intermediário",
+            equipamentos: []
+          })
+        });
+
+        const data = await response.json();
+        const novosSlots = slots.map(s =>
+          s.id === slotId ? { ...s, treino: data.treino } : s
+        );
+        setSlots(novosSlots);
+        localStorage.setItem('slotsData', JSON.stringify(novosSlots));
+        alert('Novo treino gerado com sucesso!');
+      } catch (err) {
+        console.error('Erro ao gerar novo treino:', err);
+      }
+    }
+  };
+
+  const renderEstrelas = (slotId) => {
+    return (
+      <div className="stars-container">
+        {[1, 2, 3, 4, 5].map(n => (
+          <span
+            key={n}
+            onClick={() => avaliarSlot(slotId, n)}
+            className="star"
+            style={{ opacity: avaliacoes[slotId] >= n ? 1 : 0.4 }}
+          >
+            ★
+          </span>
+        ))}
+      </div>
+    );
   };
 
   return (
@@ -54,16 +110,27 @@ function Slots() {
 
       <main className="main-content">
         {slots.map((slot, index) => (
-          <div key={slot.id_slot} className="slot-container">
+          <div key={slot.id} className="slot-container">
             <p className="slot-title">Slot {index + 1}</p>
             <div className="slot-row">
-              <div className="slot-card" onClick={() => acessarSlot(slot)} style={{ cursor: 'pointer' }}>
-                {slot.treino}
+              <div className="slot-card" onClick={() => acessarSlot(slot)}>
+                <div style={{ maxHeight: '180px', overflowY: 'auto', paddingRight: '8px' }}>
+                  <div><strong>{slot.nome}</strong></div>
+                  <div style={{
+                    marginTop: '12px',
+                    fontSize: '16px',
+                    textAlign: 'left',
+                    whiteSpace: 'pre-wrap'
+                  }}>
+                    {slot.treino || 'Clique para gerar treino'}
+                  </div>
+                </div>
               </div>
-              <button className="delete-btn" onClick={() => setPopupExcluir({ id: slot.id_slot, index })}>
+              <button className="delete-btn" onClick={() => setPopupExcluir({ id: slot.id, index })}>
                 <img src={lixeiraImg} alt="Deletar" className="trash-icon" />
               </button>
             </div>
+            {slot.treino && renderEstrelas(slot.id)}
           </div>
         ))}
 

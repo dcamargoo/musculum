@@ -8,7 +8,7 @@ const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use(cors({
-  origin: 'http://18.210.183.73:5173' // Permite chamadas do front
+  origin: 'http://localhost:5173' // Permite chamadas do front
 }));
 app.use(express.json());
 
@@ -96,5 +96,5 @@ app.get('/slot/:id', (req, res) => {
 
 // Inicia o servidor
 app.listen(PORT, () => {
-  console.log(`🚀 Servidor rodando em http://localhost:${PORT}`);
+  console.log(`🚀 Servidor rodando em http://18.210.183.73:${PORT}`);
 });
